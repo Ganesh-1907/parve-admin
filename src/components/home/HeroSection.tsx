@@ -47,7 +47,7 @@ export function HeroSection() {
           <div className="flex">
             {slides.map((slide, index) => (
               <div key={index} className="flex-[0_0_100%] min-w-0">
-                <div className="relative h-[50vh] md:h-[60vh] lg:h-[70vh]">
+                <div className="relative h-[40vh] md:h-[50vh] lg:h-[55vh]">
                   <img
                     src={slide}
                     alt={`Natural beauty skincare ${index + 1}`}
@@ -110,19 +110,19 @@ export function HeroSection() {
       </div>
 
       {/* Feature Cards Below Carousel */}
-      <div className="container py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      <div className="container py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className={`bg-card rounded-xl p-6 shadow-soft hover-lift animate-fade-in-up stagger-${index + 1} flex items-center gap-4`}
+              className={`bg-card rounded-2xl p-8 shadow-soft hover-lift animate-fade-in-up stagger-${index + 1} flex items-center gap-5`}
             >
-              <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0">
-                <feature.icon className="h-7 w-7 text-primary" />
+              <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <feature.icon className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-serif font-semibold text-lg mb-1">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="font-serif font-semibold text-xl mb-1">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
               </div>
             </div>
           ))}
