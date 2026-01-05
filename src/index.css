@@ -13,34 +13,34 @@
 
 @layer base {
   :root {
-    /* PARVE Brand Colors - Sky Blue Theme #90D5FF */
-    --background: 200 60% 96%;
-    --foreground: 210 30% 8%;
+    /* PARVE Brand Colors - Same Sky Blue (slightly lighter) */
+    --background: 200 100% 85%;
+    --foreground: 210 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 30% 8%;
+    --card-foreground: 210 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 30% 8%;
+    --popover-foreground: 210 30% 10%;
 
-    /* Primary - PARVE Sky Blue #90D5FF - Darker for hover */
+    /* Primary */
     --primary: 200 100% 45%;
+    --primary-hover: 200 100% 38%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 200 100% 35%;
 
-    /* Secondary - Warm Cream */
-    --secondary: 40 30% 96%;
-    --secondary-foreground: 210 30% 8%;
+    /* Secondary */
+    --secondary: 200 80% 93%;
+    --secondary-foreground: 210 30% 10%;
 
-    /* Muted - Soft Gray */
-    --muted: 210 20% 94%;
+    /* Muted */
+    --muted: 200 40% 90%;
     --muted-foreground: 210 25% 25%;
 
-    /* Accent - Gold/Bronze for luxury feel - Darker */
+    /* Accent */
     --accent: 35 70% 40%;
     --accent-foreground: 0 0% 100%;
 
-    /* Natural Green for eco badges */
+    /* Natural */
     --natural: 145 50% 35%;
     --natural-foreground: 0 0% 100%;
 
@@ -48,18 +48,18 @@
     --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 85%;
-    --input: 210 20% 85%;
+    --border: 200 45% 75%;
+    --input: 200 45% 75%;
     --ring: 200 100% 45%;
 
     --radius: 0.75rem;
 
-    /* Custom Design Tokens */
+    /* Shadows */
     --shadow-soft: 0 4px 20px -4px hsl(210 20% 15% / 0.12);
     --shadow-medium: 0 8px 30px -8px hsl(210 20% 15% / 0.18);
-    --shadow-glow: 0 0 40px hsl(200 100% 45% / 0.4);
+    --shadow-glow: 0 0 40px hsl(200 100% 45% / 0.35);
 
-    /* Footer - Dark Theme */
+    /* Footer */
     --footer-background: 210 25% 12%;
     --footer-foreground: 0 0% 92%;
     --footer-muted: 210 20% 50%;
@@ -106,15 +106,6 @@
     --border: 210 11% 20%;
     --input: 210 11% 20%;
     --ring: 200 100% 78%;
-
-    --sidebar-background: 210 11% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 200 100% 78%;
-    --sidebar-primary-foreground: 210 11% 10%;
-    --sidebar-accent: 210 11% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 210 11% 18%;
-    --sidebar-ring: 200 100% 78%;
   }
 }
 
@@ -134,39 +125,6 @@
 }
 
 @layer utilities {
-  /* Animation utilities */
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
-  }
-
-  .animate-slide-in-left {
-    animation: slideInLeft 0.5s ease-out forwards;
-  }
-
-  .animate-slide-in-right {
-    animation: slideInRight 0.5s ease-out forwards;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out forwards;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  /* Stagger animations */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
-
-  /* Hover utilities */
   .hover-lift {
     @apply transition-all duration-300;
   }
@@ -175,108 +133,13 @@
     box-shadow: var(--shadow-medium);
   }
 
-  /* Glass morphism */
   .glass {
-    @apply bg-background/80 backdrop-blur-lg border border-border/50;
-  }
-
-  /* Gradient text */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
-    background-size: 200% auto;
+    @apply bg-background/85 backdrop-blur-lg border border-border/50;
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Carousel styles */
-.embla {
-  overflow: hidden;
-}
-
-.embla__container {
-  display: flex;
-}
-
-.embla__slide {
-  flex: 0 0 100%;
-  min-width: 0;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-muted;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/50;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { @apply bg-muted; }
+::-webkit-scrollbar-thumb { @apply bg-muted-foreground/30 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/50; }

@@ -1,6 +1,7 @@
 import { Product, CartItem, WishlistItem } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { signupApi, loginApi } from "@/api/auth.api";
 
 interface CartStore {
   items: CartItem[];
@@ -19,12 +20,29 @@ interface WishlistStore {
   isInWishlist: (productId: string) => boolean;
 }
 
+interface User {
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  role?: "admin" | "user";
+}
+
 interface AuthStore {
   isLoggedIn: boolean;
-  user: { name: string; email: string; phone: string; address: string } | null;
-  login: (email: string, password: string) => boolean;
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+
+  login: (email: string, password: string) => Promise<boolean>;
+  signup: (
+    name: string,
+    email: string,
+    phone: string,
+    address: string,
+    password: string
+  ) => Promise<boolean>;
   logout: () => void;
-  signup: (name: string, email: string, phone: string, address: string, password: string) => boolean;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -94,39 +112,72 @@ export const useWishlistStore = create<WishlistStore>()(
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       isLoggedIn: false,
       user: null,
-      login: (email, password) => {
-        // Mock login - in production this would call an API
-        if (email && password) {
+      token: null,
+      loading: false,
+
+      /* ===== SIGNUP ===== */
+      signup: async (name, email, phone, address, password) => {
+        try {
+          set({ loading: true });
+
+          await signupApi({
+            name,
+            email,
+            phone,
+            address,
+            password,
+            confirmPassword: password,
+          });
+
+          set({ loading: false });
+          return true;
+        } catch (error) {
+          console.error("Signup error:", error);
+          set({ loading: false });
+          return false;
+        }
+      },
+
+      /* ===== LOGIN ===== */
+      login: async (email, password) => {
+        try {
+          set({ loading: true });
+
+          const res = await loginApi({ email, password });
+
+          localStorage.setItem("token", res.token);
+
           set({
             isLoggedIn: true,
-            user: {
-              name: "Demo User",
-              email,
-              phone: "+91 98765 43210",
-              address: "123 Green Park, New Delhi, 110016",
-            },
+            user: res.user,
+            token: res.token,
+            loading: false,
           });
+
           return true;
+        } catch (error) {
+          console.error("Login error:", error);
+          set({ loading: false });
+          return false;
         }
-        return false;
       },
+
+      /* ===== LOGOUT ===== */
       logout: () => {
-        set({ isLoggedIn: false, user: null });
-      },
-      signup: (name, email, phone, address, password) => {
-        if (name && email && phone && address && password) {
-          set({
-            isLoggedIn: true,
-            user: { name, email, phone, address },
-          });
-          return true;
-        }
-        return false;
+        localStorage.removeItem("token");
+        set({
+          isLoggedIn: false,
+          user: null,
+          token: null,
+        });
       },
     }),
-    { name: "parve-auth" }
+    {
+      name: "parve-auth",
+    }
   )
 );
+

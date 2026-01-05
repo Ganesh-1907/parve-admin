@@ -17,15 +17,26 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (login(formData.email, formData.password)) {
-      toast({ title: "Welcome back!", description: "You have successfully logged in." });
-      navigate("/");
-    } else {
-      toast({ title: "Login failed", description: "Please check your credentials.", variant: "destructive" });
-    }
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const success = await login(formData.email, formData.password);
+
+  if (success) {
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully logged in.",
+    });
+    navigate("/");
+  } else {
+    toast({
+      title: "Login failed",
+      description: "Please check your credentials.",
+      variant: "destructive",
+    });
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4">
