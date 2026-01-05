@@ -14,59 +14,65 @@
 @layer base {
   :root {
     /* PARVE Brand Colors - Sky Blue Theme #90D5FF */
-    --background: 200 100% 94%;
-    --foreground: 210 25% 12%;
+    --background: 200 60% 96%;
+    --foreground: 210 30% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 11% 15%;
+    --card-foreground: 210 30% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 11% 15%;
+    --popover-foreground: 210 30% 8%;
 
-    /* Primary - PARVE Sky Blue #90D5FF */
-    --primary: 200 100% 78%;
-    --primary-foreground: 210 11% 15%;
+    /* Primary - PARVE Sky Blue #90D5FF - Darker for hover */
+    --primary: 200 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 200 100% 35%;
 
     /* Secondary - Warm Cream */
     --secondary: 40 30% 96%;
-    --secondary-foreground: 210 11% 15%;
+    --secondary-foreground: 210 30% 8%;
 
     /* Muted - Soft Gray */
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 20% 30%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 25% 25%;
 
-    /* Accent - Gold/Bronze for luxury feel */
-    --accent: 35 60% 50%;
+    /* Accent - Gold/Bronze for luxury feel - Darker */
+    --accent: 35 70% 40%;
     --accent-foreground: 0 0% 100%;
 
     /* Natural Green for eco badges */
-    --natural: 145 45% 45%;
+    --natural: 145 50% 35%;
     --natural-foreground: 0 0% 100%;
 
     /* Destructive */
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 200 100% 78%;
+    --border: 210 20% 85%;
+    --input: 210 20% 85%;
+    --ring: 200 100% 45%;
 
     --radius: 0.75rem;
 
     /* Custom Design Tokens */
-    --shadow-soft: 0 4px 20px -4px hsl(210 20% 15% / 0.08);
-    --shadow-medium: 0 8px 30px -8px hsl(210 20% 15% / 0.12);
-    --shadow-glow: 0 0 40px hsl(200 100% 78% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(210 20% 15% / 0.12);
+    --shadow-medium: 0 8px 30px -8px hsl(210 20% 15% / 0.18);
+    --shadow-glow: 0 0 40px hsl(200 100% 45% / 0.4);
+
+    /* Footer - Dark Theme */
+    --footer-background: 210 25% 12%;
+    --footer-foreground: 0 0% 92%;
+    --footer-muted: 210 20% 50%;
 
     /* Admin sidebar */
-    --sidebar-background: 210 11% 15%;
+    --sidebar-background: 210 25% 10%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 200 100% 78%;
-    --sidebar-primary-foreground: 210 11% 15%;
-    --sidebar-accent: 210 11% 22%;
+    --sidebar-primary: 200 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 18%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 210 11% 25%;
-    --sidebar-ring: 200 100% 78%;
+    --sidebar-border: 210 20% 20%;
+    --sidebar-ring: 200 100% 50%;
   }
 
   .dark {
