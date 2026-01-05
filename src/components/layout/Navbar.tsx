@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCartStore, useAuthStore, useWishlistStore } from "@/store/useStore";
-import logo from "@/assets/logo-parve.png";
+import { Logo } from "./Logo";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -33,9 +33,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full glass">
       <div className="container flex h-16 items-center justify-between md:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="PARVE" className="h-6 md:h-8" />
-        </Link>
+        <Logo />
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">

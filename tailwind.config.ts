@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         serif: ['"Playfair Display"', "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        logo: ['"Playfair Display"', "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
