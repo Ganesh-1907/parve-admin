@@ -45,8 +45,8 @@ const Login = () => {
         <div className="bg-card rounded-2xl p-8 shadow-soft">
           <div className="text-center mb-8 flex flex-col items-center">
             <Logo className="mb-4" />
-            <h1 className="text-xl text-muted-foreground mt-1">Welcome Back to PARVE Family</h1>
-            <p className="text-sm text-muted-foreground mt-1">Sign in to your account</p>
+            <h1 className="text-xl text-muted-foreground mt-1">Admin Login</h1>
+            <p className="text-sm text-muted-foreground mt-1">Sign in to manage the application</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,7 +55,7 @@ const Login = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="admin@example.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
@@ -92,16 +92,9 @@ const Login = () => {
             </div>
 
             <Button type="submit" className="w-full">
-              Sign In
+              Login
             </Button>
           </form>
-
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Don&apos;t have an account?{" "}
-            <Link to="/signup" className="text-primary hover:underline font-medium">
-              Sign up
-            </Link>
-          </p>
         </div>
       </div>
     </div>
