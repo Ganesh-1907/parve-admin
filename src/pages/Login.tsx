@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store/useStore";
 import { toast } from "@/hooks/use-toast";
 import { Logo } from "@/components/layout/Logo";
-import { Logo } from "@/components/layout/Logo";
 
 const Login = () => {
   const navigate = useNavigate();
