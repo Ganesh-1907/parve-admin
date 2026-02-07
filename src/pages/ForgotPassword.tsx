@@ -7,8 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import api from "@/api/axios";
 import { Logo } from "@/components/layout/Logo";
-import api from "@/api/axios";
-import { Logo } from "@/components/layout/Logo";
+
 
 type Step = "email" | "otp" | "newPassword" | "success";
 

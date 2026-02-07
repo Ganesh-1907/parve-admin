@@ -1,18 +1,22 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AdminLayout } from "@/components/layout/AdminLayout";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminProducts from "./pages/admin/AdminProducts";
-import AdminOrders from "./pages/admin/AdminOrders";
-import AddProductPage from "./pages/admin/AddProductPage";
-import EditProductPage from "./pages/admin/EditProductPage";
 import NotFound from "./pages/NotFound";
-import AdminRoute from "@/components/AdminRoute";
+import About from "./pages/About";
+import Terms from "./pages/Terms";
+import Products from "./pages/Products";
+import Index from "./pages/Index";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import Wishlist from "./pages/Wishlist";
+import Checkout from "./pages/Checkout";
+import Profile from "./pages/Profile";
+import Orders from "./pages/Orders";
+import { UserLayout } from "@/components/layout/UserLayout";
 
 const queryClient = new QueryClient();
 
@@ -26,20 +30,18 @@ const App = () => (
           {/* Auth Routes (no layout) */}
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* Admin Routes */}
-          <Route
-            path="/"
-            element={
-              <AdminRoute>
-                <AdminLayout />
-              </AdminRoute>
-            }
-          >
-            <Route index element={<AdminDashboard />} />
-            <Route path="products" element={<AdminProducts />} />
-            <Route path="products/add" element={<AddProductPage />} />
-            <Route path="products/:id/edit" element={<EditProductPage />} />
-            <Route path="orders" element={<AdminOrders />} />
+          {/* User Routes */}
+          <Route path="/" element={<UserLayout />}>
+            <Route index element={<Index />} />
+            <Route path="products" element={<Products />} />
+            <Route path="products/:id" element={<ProductDetails />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="about" element={<About />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="orders" element={<Orders />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
