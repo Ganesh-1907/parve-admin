@@ -26,7 +26,7 @@ export function AdminLayout() {
           {/* Logo */}
           <div className="flex items-center gap-4">
             <Logo className="h-10 w-auto" variant="navbar" />
-            <span className="font-semibold text-gray-800 hidden sm:inline border-l pl-4 border-gray-300">Admin Dashboard</span>
+            <span className="font-semibold text-3xl text-gray-800 hidden sm:inline border-l pl-4 border-gray-300">Admin Dashboard</span>
           </div>
 
           {/* Desktop Navigation */}
