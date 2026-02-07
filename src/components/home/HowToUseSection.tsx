@@ -30,7 +30,7 @@ export function HowToUseSection() {
   }, [emblaApi]);
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-12">
       <div className="container">
         <div className="flex items-center justify-between mb-10">
           <div>

@@ -1,18 +1,23 @@
 export interface Product {
-  id: string;
-  name: string;
+  _id: string;
+  id?: string; // For backwards compatibility
+  productName: string;
+  name?: string; // For backwards compatibility
   description: string;
   price: number;
+  finalPrice?: number; // Calculated from backend
   category: 'facewash' | 'serums' | 'creams';
   stock: number;
   unit: string;
   images: string[];
   discount?: {
     percentage: number;
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
+    isYearly?: boolean;
   };
   concerns?: string[];
+  isActive?: boolean;
 }
 
 export interface CartItem {

@@ -47,7 +47,7 @@ export function HeroSection() {
           <div className="flex">
             {slides.map((slide, index) => (
               <div key={index} className="flex-[0_0_100%] min-w-0">
-                <div className="relative h-[40vh] md:h-[50vh] lg:h-[55vh]">
+                <div className="relative h-[40vh] md:h-[50vh] lg:h-[65vh]">
                   <img
                     src={slide}
                     alt={`Natural beauty skincare ${index + 1}`}
@@ -78,22 +78,22 @@ export function HeroSection() {
         </div>
 
         {/* Navigation Arrows */}
-        <Button
+        {/* <Button
           variant="ghost"
           size="icon"
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm hover:bg-background"
           onClick={scrollPrev}
         >
           <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           variant="ghost"
           size="icon"
           className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm hover:bg-background"
           onClick={scrollNext}
         >
           <ChevronRight className="h-5 w-5" />
-        </Button>
+        </Button> */}
 
         {/* Dots */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -110,7 +110,7 @@ export function HeroSection() {
       </div>
 
       {/* Feature Cards Below Carousel */}
-      <div className="container py-10">
+      <div className="container pt-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <div

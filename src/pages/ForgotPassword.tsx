@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import api from "@/api/axios";
 import { Logo } from "@/components/layout/Logo";
+import api from "@/api/axios";
+import { Logo } from "@/components/layout/Logo";
 
 type Step = "email" | "otp" | "newPassword" | "success";
 
@@ -231,12 +233,12 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md">
         <div className="bg-card rounded-2xl p-8 shadow-medium border border-border/50">
           {/* Logo */}
-          <div className="text-center mb-6">
-            <Logo className="justify-center mb-4" />
+          <div className="text-center mb-6 flex justify-center">
+            <Logo className="mb-4" />
           </div>
 
           {/* Back Button (except on success) */}
-          {step !== "success" && (
+          {/* {step !== "success" && (
             <button
               onClick={() => {
                 if (step === "email") navigate("/login");
@@ -248,7 +250,7 @@ const ForgotPassword = () => {
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Back</span>
             </button>
-          )}
+          )} */}
 
           {/* Step Content */}
           {step === "email" && renderEmailStep()}

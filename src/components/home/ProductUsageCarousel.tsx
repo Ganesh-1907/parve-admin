@@ -40,7 +40,6 @@ export function ProductUsageCarousel() {
     {
       loop: true,
       align: "start",
-      slidesToScroll: 1,
     },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
   );
@@ -51,16 +50,16 @@ export function ProductUsageCarousel() {
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
     emblaApi.on("select", onSelect);
     return () => {
-      emblaApi.off("select", onSelect);
+      if (emblaApi) emblaApi.off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-12 bg-background">
       <div className="container">
+        {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-foreground">
             Your Daily Skincare Ritual
@@ -70,12 +69,19 @@ export function ProductUsageCarousel() {
           </p>
         </div>
 
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4 md:gap-6">
+        {/* Carousel */}
+        <div className="overflow-hidden -mx-2 md:-mx-3" ref={emblaRef}>
+          <div className="flex">
             {productUsageImages.map((item) => (
               <div
                 key={item.id}
-                className="flex-[0_0_80%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0"
+                className="
+                  flex-[0_0_100%]
+                  md:flex-[0_0_50%]
+                  lg:flex-[0_0_25%]
+                  min-w-0
+                  px-2 md:px-3
+                "
               >
                 <div className="relative rounded-2xl overflow-hidden shadow-medium group">
                   <div className="aspect-[4/5] overflow-hidden">
@@ -85,9 +91,13 @@ export function ProductUsageCarousel() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
+
+                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="font-serif text-xl font-semibold text-white">
+
+                  {/* Title */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <h3 className="font-serif text-lg font-semibold text-white">
                       {item.title}
                     </h3>
                   </div>

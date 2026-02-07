@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Mail } from "lucide-react";
-import logo from "@/assets/logo-parve.png";
+import { Logo } from "@/components/layout/Logo";
 
 export function Footer() {
   return (
@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <img src={logo} alt="PARVE" className="h-8 brightness-0 invert" />
+            <Logo variant="footer" />
             <p className="text-sm text-[hsl(var(--footer-muted))]">
               Natural beauty, crafted with care. Every product is made with the finest plant-based ingredients.
             </p>

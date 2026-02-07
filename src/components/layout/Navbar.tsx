@@ -33,7 +33,9 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full glass">
       <div className="container flex h-16 items-center justify-between md:h-20">
         {/* Logo */}
-        <Logo />
+        <div className="flex-shrink-0">
+          <Logo className="h-10 md:h-12 w-auto" variant="navbar" />
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
@@ -53,7 +55,7 @@ export function Navbar() {
         {/* Right side actions */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* Search */}
-          <div className="relative hidden md:block">
+          {/* <div className="relative hidden md:block">
             {searchOpen ? (
               <div className="flex items-center gap-2 animate-fade-in">
                 <Input
@@ -71,7 +73,7 @@ export function Navbar() {
                 <Search className="h-5 w-5" />
               </Button>
             )}
-          </div>
+          </div> */}
 
           {/* Wishlist */}
           <Link to="/wishlist">
@@ -121,7 +123,7 @@ export function Navbar() {
                   <Link to="/wishlist">Wishlist</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-destructive">
+                <DropdownMenuItem onClick={() => { logout(); window.location.href = "/"; }} className="text-destructive">
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
                 </DropdownMenuItem>
