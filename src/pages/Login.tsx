@@ -8,6 +8,7 @@ import { useAuthStore } from "@/store/useStore";
 import { toast } from "@/hooks/use-toast";
 import { Logo } from "@/components/layout/Logo";
 
+
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuthStore();
@@ -17,7 +18,7 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const success = await login(formData.email, formData.password);
@@ -96,7 +97,7 @@ const Login = () => {
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/signup" className="text-primary hover:underline font-medium">
               Sign up
             </Link>
