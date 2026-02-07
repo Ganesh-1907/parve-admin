@@ -22,13 +22,14 @@ const Signup = () => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       toast({ title: "Passwords don't match", variant: "destructive" });
       return;
     }
-    if (signup(formData.name, formData.email, formData.phone, formData.address, formData.password)) {
+    const success = await signup(formData.name, formData.email, formData.phone, formData.address, formData.password);
+    if (success) {
       toast({ title: "Account created!", description: "Welcome to PARVE." });
       navigate("/");
     } else {
