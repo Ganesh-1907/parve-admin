@@ -24,9 +24,9 @@ export function AdminLayout() {
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="flex items-center justify-between px-6 py-4">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="PARVE Admin" className="h-8" />
-            <span className="font-semibold text-gray-800 hidden sm:inline">Admin Dashboard</span>
+          <div className="flex items-center gap-4">
+            <Logo className="text-xl md:text-2xl" />
+            <span className="font-semibold text-gray-800 hidden sm:inline border-l pl-4 border-gray-300">Admin Dashboard</span>
           </div>
 
           {/* Desktop Navigation */}

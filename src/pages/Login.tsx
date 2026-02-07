@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuthStore } from "@/store/useStore";
 import { toast } from "@/hooks/use-toast";
-import logo from "@/assets/logo-parve.png";
+import { Logo } from "@/components/layout/Logo";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -54,9 +54,7 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="bg-card rounded-2xl p-8 shadow-soft">
           <div className="text-center mb-8">
-            <Link to="/login">
-              <img src={logo} alt="PARVE" className="h-10 mx-auto mb-4" />
-            </Link>
+            <Logo className="mb-4 mx-auto" />
             <h1 className="font-serif text-2xl font-bold">Admin Sign In</h1>
             <p className="text-sm text-muted-foreground mt-1">Sign in to the admin dashboard</p>
           </div>

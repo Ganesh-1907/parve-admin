@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import logo from "@/assets/logo-parve.png";
+import api from "@/api/axios";
+import { Logo } from "@/components/layout/Logo";
 
 type Step = "email" | "otp" | "newPassword" | "success";
 
@@ -18,37 +19,51 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       toast({ title: "Error", description: "Please enter your email address.", variant: "destructive" });
       return;
     }
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await api.post("/auth/forgot-password", { email });
       toast({ title: "OTP Sent", description: "A reset code has been sent to your email." });
       setStep("otp");
-    }, 1500);
+    } catch (error: any) {
+      toast({ 
+        title: "Error", 
+        description: error.response?.data?.message || "Failed to send OTP.", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleOtpSubmit = (e: React.FormEvent) => {
+  const handleOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp || otp.length < 4) {
+    if (!otp || otp.length < 6) {
       toast({ title: "Error", description: "Please enter a valid OTP.", variant: "destructive" });
       return;
     }
     setIsLoading(true);
-    // Simulate OTP verification
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await api.post("/auth/verify-otp", { email, otp });
       toast({ title: "OTP Verified", description: "Please set your new password." });
       setStep("newPassword");
-    }, 1500);
+    } catch (error: any) {
+      toast({ 
+        title: "Error", 
+        description: error.response?.data?.message || "Invalid OTP.", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!password || password.length < 6) {
       toast({ title: "Error", description: "Password must be at least 6 characters.", variant: "destructive" });
@@ -59,11 +74,18 @@ const ForgotPassword = () => {
       return;
     }
     setIsLoading(true);
-    // Simulate password reset
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await api.post("/auth/reset-password", { email, otp, password, confirmPassword });
       setStep("success");
-    }, 1500);
+    } catch (error: any) {
+      toast({ 
+        title: "Error", 
+        description: error.response?.data?.message || "Failed to reset password.", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderEmailStep = () => (
@@ -131,10 +153,9 @@ const ForgotPassword = () => {
         Didn't receive the code?{" "}
         <button
           type="button"
-          onClick={() => {
-            toast({ title: "Code Resent", description: "A new code has been sent to your email." });
-          }}
-          className="text-primary hover:underline font-medium"
+          onClick={handleEmailSubmit}
+          disabled={isLoading}
+          className="text-primary hover:underline font-medium disabled:opacity-50"
         >
           Resend
         </button>
@@ -211,9 +232,7 @@ const ForgotPassword = () => {
         <div className="bg-card rounded-2xl p-8 shadow-medium border border-border/50">
           {/* Logo */}
           <div className="text-center mb-6">
-            <Link to="/login">
-              <img src={logo} alt="PARVE" className="h-10 mx-auto" />
-            </Link>
+            <Logo className="justify-center mb-4" />
           </div>
 
           {/* Back Button (except on success) */}

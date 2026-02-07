@@ -17,6 +17,10 @@ interface Product {
   category: string;
   unit: string;
   images: string[];
+  discount?: {
+    percentage: number;
+    isYearly: boolean;
+  };
 }
 
 const AdminProducts = () => {
@@ -40,25 +44,6 @@ const AdminProducts = () => {
     fetchProducts();
   }, []);
 
-  /* ================= ADD PRODUCT ================= */
-  const handleAddProduct = async () => {
-    try {
-      const formData = new FormData();
-
-      formData.append("productName", "");
-      formData.append("description", "");
-      formData.append("price", "");
-      formData.append("stock", "");
-      formData.append("category", "");
-      formData.append("unit", "");
-
-      toast({ title: "Product added successfully" });
-      fetchProducts();
-    } catch (error) {
-      toast({ title: "Add product failed", variant: "destructive" });
-    }
-  };
-
   /* ================= EDIT PRODUCT ================= */
   const handleEditClick = (product: Product) => {
     navigate(`/products/${product._id}/edit`);
@@ -69,7 +54,7 @@ const AdminProducts = () => {
     if (!confirm("Delete this product?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API_BASE_URL}/products/${id}`, {
+      await axios.delete(`${API_BASE_URL}/products/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -87,7 +72,7 @@ const AdminProducts = () => {
     <div>
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-gray-800">Products</h1>
+        <h1 className="font-serif text-2xl md:text-3xl font-bold text-blue-600">Products</h1>
 
         <button 
           onClick={() => navigate("/products/add")}
@@ -102,33 +87,28 @@ const AdminProducts = () => {
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="p-4 text-left text-sm font-semibold text-gray-700">Product</th>
               <th className="p-4 text-left text-sm font-semibold text-gray-700">Product Name</th>
               <th className="p-4 text-left text-sm font-semibold text-gray-700">Category</th>
               <th className="p-4 text-left text-sm font-semibold text-gray-700">Price</th>
               <th className="p-4 text-left text-sm font-semibold text-gray-700">Stock</th>
+              <th className="p-4 text-left text-sm font-semibold text-gray-700">Units</th>
+              <th className="p-4 text-left text-sm font-semibold text-gray-700">Discount</th>
               <th className="p-4 text-left text-sm font-semibold text-gray-700">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
               <tr key={p._id} className="border-t border-gray-200 hover:bg-gray-50">
-               
-               <td className="p-4">
-  <div className="flex items-center">
-    <img
-      src={`${API_BASE_URL.replace("/api", "")}${p.images[0]}`}
-      alt={p.productName}
-      className="w-12 h-12 rounded object-cover"
-    />
-  </div>
-</td>
- <td className="p-4"><span className="font-medium text-gray-800">{p.productName}</span></td>
+                <td className="p-4"><span className="font-medium text-gray-800">{p.productName}</span></td>
                 <td className="p-4">
                   <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">{p.category}</Badge>
                 </td>
                 <td className="p-4 text-gray-800 font-medium">₹{p.price}</td>
                 <td className="p-4 text-gray-800">{p.stock}</td>
+                <td className="p-4 text-gray-800">{p.unit}</td>
+                <td className="p-4 text-gray-800">
+                  {p.discount?.percentage ? `${p.discount.percentage}%` : '-'}
+                </td>
                 <td className="p-4 flex gap-3">
                   <button 
                     className="text-blue-600 hover:text-blue-700 cursor-pointer transition-colors"
