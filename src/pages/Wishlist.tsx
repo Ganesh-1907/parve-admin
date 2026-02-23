@@ -8,7 +8,7 @@ import { getProductsApi } from "@/api/products.api";
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "";
 
 const Wishlist = () => {
   const { items, removeItem, isLoading, syncWithBackend, productCache } = useWishlistStore();

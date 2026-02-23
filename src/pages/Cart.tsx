@@ -4,7 +4,7 @@ import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Loader2 } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { useCartStore, useAuthStore } from "@/store/useStore";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "";
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart, isLoading, syncWithBackend } = useCartStore();

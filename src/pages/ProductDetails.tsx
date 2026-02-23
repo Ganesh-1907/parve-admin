@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { ProductCard } from "@/components/ProductCard";
 import { Product } from "@/types";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "";
 
 const ProductDetails = () => {
   const { id } = useParams();

@@ -6,7 +6,7 @@ import { Product } from "@/types";
 import { useCartStore, useWishlistStore, useAuthStore } from "@/store/useStore";
 import { toast } from "@/hooks/use-toast";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || "";
 
 interface ProductCardProps {
   product: Product;
