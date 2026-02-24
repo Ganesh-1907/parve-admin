@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
 import axios from "axios";
 import { useState } from "react";
+import { compressImage } from "@/utils/compressImage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,8 +64,12 @@ const AddProductPage = () => {
         formData.append("discountEndDate", form.discountEndDate);
       }
 
-      formData.append("images", form.mainImage);
-      form.subImages.forEach((img) => {
+      toast({ title: "Compressing images...", description: "Please wait" });
+      const compressedMain = await compressImage(form.mainImage);
+      const compressedSubs = await Promise.all(form.subImages.map((img) => compressImage(img)));
+
+      formData.append("images", compressedMain);
+      compressedSubs.forEach((img) => {
         formData.append("images", img);
       });
 
