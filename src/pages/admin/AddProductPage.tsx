@@ -27,6 +27,7 @@ const AddProductPage = () => {
     stock: "",
     category: "",
     unit: "",
+    unitType: "gms",
     discountPercentage: "",
     isYearlyDiscount: true, // Default to true
     discountStartDate: "",
@@ -53,7 +54,7 @@ const AddProductPage = () => {
       formData.append("price", form.price);
       formData.append("stock", form.stock);
       formData.append("category", form.category);
-      formData.append("unit", form.unit);
+      formData.append("unit", `${form.unit}${form.unitType}`);
       formData.append("discountPercentage", form.discountPercentage);
       formData.append("isYearlyDiscount", String(form.isYearlyDiscount));
 
@@ -117,6 +118,8 @@ const AddProductPage = () => {
                   <SelectItem value="facewash">Facewash</SelectItem>
                   <SelectItem value="serums">Serums</SelectItem>
                   <SelectItem value="creams">Creams</SelectItem>
+                  <SelectItem value="moisturizer">Moisturizer</SelectItem>
+                  <SelectItem value="night-cream">Night Cream</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -163,13 +166,29 @@ const AddProductPage = () => {
           {/* Unit & Discount - Side by Side */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label className="text-gray-700 font-medium">Unit (in gms)</Label>
-              <Input
-                value={form.unit}
-                onChange={(e) => setForm({ ...form, unit: e.target.value })}
-                className="mt-2 bg-white border border-gray-300 text-gray-900 rounded-md focus:border-gray-500 focus:ring-gray-500 placeholder-gray-400 shadow-sm"
-                required
-              />
+              <Label className="text-gray-700 font-medium">Unit</Label>
+              <div className="mt-2 flex gap-2">
+                <Input
+                  type="number"
+                  value={form.unit}
+                  onChange={(e) => setForm({ ...form, unit: e.target.value })}
+                  placeholder="e.g. 50"
+                  className="bg-white border border-gray-300 text-gray-900 rounded-md focus:border-gray-500 focus:ring-gray-500 placeholder-gray-400 shadow-sm"
+                  required
+                />
+                <Select
+                  value={form.unitType}
+                  onValueChange={(value) => setForm({ ...form, unitType: value })}
+                >
+                  <SelectTrigger className="w-24 bg-white border border-gray-300 text-gray-900 rounded-md shadow-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="gms">gms</SelectItem>
+                    <SelectItem value="ml">ml</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div>
               <Label className="text-gray-700 font-medium">Discount %</Label>

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import { getAllOrdersApi, updateOrderStatusApi } from "@/api/orders.api";
-import { Loader2, Package, User, CreditCard, ExternalLink, Calendar, MapPin } from "lucide-react";
+import { Loader2, Package, User, CreditCard, ExternalLink, Calendar, MapPin, Search } from "lucide-react";
 import { format } from "date-fns";
 
 const statusColors: Record<string, string> = {
@@ -20,6 +21,30 @@ const statusColors: Record<string, string> = {
 const AdminOrders = () => {
   const queryClient = useQueryClient();
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+
+  // Date filter state
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [appliedStart, setAppliedStart] = useState("");
+  const [appliedEnd, setAppliedEnd] = useState("");
+
+  // Status filter & search (live — no Apply needed)
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleApplyFilter = () => {
+    setAppliedStart(startDate);
+    setAppliedEnd(endDate);
+  };
+
+  const handleClearFilter = () => {
+    setStartDate("");
+    setEndDate("");
+    setAppliedStart("");
+    setAppliedEnd("");
+    setStatusFilter("all");
+    setSearchQuery("");
+  };
 
   // Fetch orders
   const { data, isLoading, error } = useQuery({
@@ -61,11 +86,129 @@ const AdminOrders = () => {
     );
   }
 
-  const orders = data?.orders || [];
+  const allOrders = data?.orders || [];
+
+  // Client-side filtering: date range + status + search
+  const orders = allOrders.filter((order: any) => {
+    // Date range filter
+    if (appliedStart || appliedEnd) {
+      const orderDate = new Date(order.createdAt);
+      orderDate.setHours(0, 0, 0, 0);
+      if (appliedStart) {
+        const from = new Date(appliedStart);
+        from.setHours(0, 0, 0, 0);
+        if (orderDate < from) return false;
+      }
+      if (appliedEnd) {
+        const to = new Date(appliedEnd);
+        to.setHours(23, 59, 59, 999);
+        if (orderDate > to) return false;
+      }
+    }
+    // Status filter
+    if (statusFilter !== "all" && order.status !== statusFilter) return false;
+    // Search filter (name or email)
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      const name = (order.user?.name || "").toLowerCase();
+      const email = (order.user?.email || "").toLowerCase();
+      if (!name.includes(q) && !email.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const isAnyFilterActive = appliedStart || appliedEnd || statusFilter !== "all" || searchQuery.trim();
 
   return (
     <div>
       <h1 className="font-serif text-2xl md:text-3xl font-bold mb-6 text-gray-800">Orders Management</h1>
+
+      {/* Filter Bar — single row, all fixed widths, no layout shift */}
+      <div className="p-5 bg-gray-50 border border-gray-200 rounded-lg mb-5">
+        <div className="flex flex-wrap items-end gap-4">
+
+          {/* Search */}
+          <div className="flex flex-col gap-1.5 w-72">
+            <label className="text-sm font-medium text-gray-600">Search Customer</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Name or email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="h-10 pl-9 bg-white border-gray-300 text-sm w-full"
+              />
+            </div>
+          </div>
+
+          {/* Status Filter */}
+          <div className="flex flex-col gap-1.5 w-48">
+            <label className="text-sm font-medium text-gray-600">Status</label>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="h-10 w-48 bg-white border-gray-300 text-sm">
+                <SelectValue placeholder="All statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="shipped">Shipped</SelectItem>
+                <SelectItem value="out_for_delivery">Out for Delivery</SelectItem>
+                <SelectItem value="delivered">Delivered</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Start Date */}
+          <div className="flex flex-col gap-1.5 w-44">
+            <label className="text-sm font-medium text-gray-600">Start Date</label>
+            <Input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              max={endDate || undefined}
+              className="h-10 w-44 bg-white border-gray-300 text-sm"
+            />
+          </div>
+
+          {/* End Date */}
+          <div className="flex flex-col gap-1.5 w-44">
+            <label className="text-sm font-medium text-gray-600">End Date</label>
+            <Input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              min={startDate || undefined}
+              className="h-10 w-44 bg-white border-gray-300 text-sm"
+            />
+          </div>
+
+          {/* Apply Date */}
+          <button
+            onClick={handleApplyFilter}
+            disabled={!startDate && !endDate}
+            className="h-10 px-5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed self-end"
+          >
+            Apply Date
+          </button>
+
+          {/* Clear All — always in DOM, invisible when inactive = zero layout shift */}
+          <button
+            onClick={handleClearFilter}
+            className={`h-10 px-5 border border-gray-300 text-gray-600 text-sm font-medium rounded-md hover:bg-gray-100 transition-colors self-end ${isAnyFilterActive ? "" : "invisible pointer-events-none"}`}
+          >
+            Clear All
+          </button>
+
+          {/* Count hint — always in DOM too */}
+          <span className={`text-sm text-gray-500 self-end pb-2 ${isAnyFilterActive ? "" : "invisible"}`}>
+            {orders.length} / {allOrders.length} orders
+          </span>
+
+        </div>
+      </div>
 
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
