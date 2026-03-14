@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Package, DollarSign, Truck, Clock, XCircle, Users } from "lucide-react";
+import { Package, DollarSign, Truck, Clock, XCircle, Users, Loader2 } from "lucide-react";
 import api from "@/api/axios";
 import {
   PieChart,
@@ -44,7 +44,12 @@ const AdminDashboard = () => {
   ];
 
   if (loading) {
-    return <div className="p-8 text-center">Loading dashboard...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 mb-4" />
+        <p className="text-gray-500 font-medium">Loading dashboard...</p>
+      </div>
+    );
   }
 
   return (

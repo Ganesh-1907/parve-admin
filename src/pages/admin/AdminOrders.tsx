@@ -267,7 +267,12 @@ const AdminOrders = () => {
                     <td className="p-4">
                       <Select defaultValue={order.status} onValueChange={(v) => handleStatusChange(order._id, v)}>
                         <SelectTrigger className={`w-[140px] h-8 text-xs border-0 ring-1 ring-gray-200 ${statusColors[order.status]}`}>
-                          <SelectValue />
+                          <div className="flex items-center gap-2">
+                            {mutation.isPending && mutation.variables?.id === order._id && (
+                              <Loader2 className="h-3 w-3 animate-spin" />
+                            )}
+                            <SelectValue />
+                          </div>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="pending">Pending</SelectItem>

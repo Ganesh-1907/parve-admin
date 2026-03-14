@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -27,6 +27,7 @@ const AdminProducts = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   /* ================= FETCH PRODUCTS ================= */
   const fetchProducts = async () => {
@@ -53,6 +54,7 @@ const AdminProducts = () => {
   const handleDeleteProduct = async (id: string) => {
     if (!confirm("Delete this product?")) return;
     try {
+      setDeletingId(id);
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/products/delete/${id}`, {
         headers: {
@@ -63,10 +65,19 @@ const AdminProducts = () => {
       fetchProducts();
     } catch (error) {
       toast({ title: "Delete failed", variant: "destructive" });
+    } finally {
+      setDeletingId(null);
     }
   };
 
-  if (loading) return <div className="text-gray-600 pt-8">Loading products...</div>;
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 mb-4" />
+        <p className="text-gray-500 font-medium">Loading products...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -117,10 +128,15 @@ const AdminProducts = () => {
                     <Pencil className="h-4 w-4" />
                   </button>
                   <button 
-                    className="text-blue-600 hover:text-blue-700 cursor-pointer transition-colors"
+                    className="text-blue-600 hover:text-blue-700 cursor-pointer transition-colors disabled:opacity-50"
                     onClick={() => handleDeleteProduct(p._id)}
+                    disabled={deletingId === p._id}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    {deletingId === p._id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
                   </button>
                 </td>
               </tr>

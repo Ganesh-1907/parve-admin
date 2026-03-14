@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Package, ShoppingCart, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, LogOut, Menu, X, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/layout/Logo";
@@ -10,6 +10,7 @@ const navItems = [
   { name: "Dashboard", path: "/", icon: LayoutDashboard },
   { name: "Products", path: "/products", icon: Package },
   { name: "Orders", path: "/orders", icon: ShoppingCart },
+  { name: "Reviews", path: "/reviews", icon: MessageSquare },
 ];
 
 export function AdminLayout() {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Mail, KeyRound, CheckCircle } from "lucide-react";
+import { ArrowLeft, Mail, KeyRound, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,7 +115,14 @@ const ForgotPassword = () => {
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Sending..." : "Send Reset Code"}
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Sending...
+          </>
+        ) : (
+          "Send Reset Code"
+        )}
       </Button>
     </form>
   );
@@ -147,7 +154,14 @@ const ForgotPassword = () => {
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Verifying..." : "Verify Code"}
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Verifying...
+          </>
+        ) : (
+          "Verify Code"
+        )}
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
@@ -205,7 +219,14 @@ const ForgotPassword = () => {
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Resetting..." : "Reset Password"}
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Resetting...
+          </>
+        ) : (
+          "Reset Password"
+        )}
       </Button>
     </form>
   );

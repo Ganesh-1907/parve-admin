@@ -50,3 +50,16 @@ export interface WishlistItem {
   productId: string;
   addedAt: string;
 }
+
+export interface Review {
+  _id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  rating: number;
+  comment: string;
+  productType: "Facewash" | "Serums" | "Creams" | "Moisturizer" | "Night Cream" | "All";
+  images: string[];
+  status: "public" | "private";
+  createdAt: string;
+}

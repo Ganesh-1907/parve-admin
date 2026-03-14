@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import { useState } from "react";
 import { compressImage } from "@/utils/compressImage";
@@ -354,9 +354,16 @@ const AddProductPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 text-blue-600 bg-white border border-blue-100 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 font-semibold"
+              className="px-6 py-2 text-blue-600 bg-white border border-blue-100 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 font-semibold flex items-center justify-center gap-2 min-w-[140px]"
             >
-              {loading ? "Adding..." : "Add Product"}
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                "Add Product"
+              )}
             </button>
             <button
               type="button"

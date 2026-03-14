@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, Loader2 } from "lucide-react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { compressImage } from "@/utils/compressImage";
@@ -163,8 +163,9 @@ const EditProductPage = () => {
 
   if (fetching) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 mb-4" />
+        <p className="text-gray-500 font-medium">Loading product data...</p>
       </div>
     );
   }
@@ -449,9 +450,16 @@ const EditProductPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 text-blue-600 bg-white border border-blue-100 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 font-semibold"
+              className="px-6 py-2 text-blue-600 bg-white border border-blue-100 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 font-semibold flex items-center justify-center gap-2 min-w-[160px]"
             >
-              {loading ? "Updating..." : "Update Product"}
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                "Update Product"
+              )}
             </button>
             <button
               type="button"
