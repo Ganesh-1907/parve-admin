@@ -10,3 +10,8 @@ export const updateReviewStatusApi = async (id: string, status: "public" | "priv
     const response = await api.put(`/reviews/status/${id}`, { status });
     return response.data;
 };
+
+export const getReviewByIdApi = async (id: string) => {
+    const response = await api.get(`/reviews/${id}`);
+    return response.data;
+};

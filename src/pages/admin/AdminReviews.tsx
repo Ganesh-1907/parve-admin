@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Star, Eye, EyeOff, MessageSquare, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
@@ -15,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const AdminReviews = () => {
+  const navigate = useNavigate();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
@@ -81,10 +83,10 @@ const AdminReviews = () => {
             <table className="w-full text-left border-collapse">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">User / Date</th>
-                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Product / Rating</th>
-                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Comment</th>
-                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Photos</th>
+                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Username</th>
+                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Product</th>
+                  <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Rating</th>
                   <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                   <th className="p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -94,12 +96,16 @@ const AdminReviews = () => {
                   <tr key={review._id} className="hover:bg-blue-50/30 transition-colors">
                     <td className="p-4">
                       <p className="font-semibold text-gray-900">{review.userName}</p>
-                      <p className="text-xs text-gray-500">{format(new Date(review.createdAt), "MMM d, yyyy")}</p>
                     </td>
                     <td className="p-4">
-                      <Badge variant="outline" className="mb-2 bg-blue-50 text-blue-700 border-blue-100">
+                      <p className="text-sm text-gray-500">{format(new Date(review.createdAt), "MMM d, yyyy")}</p>
+                    </td>
+                    <td className="p-4">
+                      <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-100">
                         {review.productType}
                       </Badge>
+                    </td>
+                    <td className="p-4">
                       <div className="flex gap-0.5">
                         {[1, 2, 3, 4, 5].map((s) => (
                           <Star
@@ -111,30 +117,20 @@ const AdminReviews = () => {
                         ))}
                       </div>
                     </td>
-                    <td className="p-4 max-w-xs">
-                      <p className="text-sm text-gray-700 line-clamp-3 italic">"{review.comment}"</p>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex gap-1">
-                        {review.images.map((img, i) => (
-                          <a 
-                            key={i} 
-                            href={`${baseUrl}${img}`} 
-                            target="_blank" 
-                            rel="noreferrer"
-                            className="h-10 w-10 rounded border overflow-hidden hover:opacity-80 transition-opacity"
-                          >
-                            <img src={`${baseUrl}${img}`} className="h-full w-full object-cover" />
-                          </a>
-                        ))}
-                      </div>
-                    </td>
                     <td className="p-4">
                       <Badge className={review.status === "public" ? "bg-green-100 text-green-700 border-green-200 hover:bg-green-100" : "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-100"}>
                         {review.status}
                       </Badge>
                     </td>
-                    <td className="p-4">
+                    <td className="p-4 flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600 border-blue-200 hover:bg-blue-50"
+                        onClick={() => navigate(`/reviews/${review._id}`)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" /> View
+                      </Button>
                       <Button
                         variant="ghost"
                         size="sm"
