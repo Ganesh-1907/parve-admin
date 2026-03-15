@@ -14,7 +14,8 @@ const ReviewDetailsPage = () => {
   const [review, setReview] = useState<Review | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+  const IMAGE_BASE_URL = API_BASE_URL.replace('/api', '');
 
   const fetchReview = async () => {
     if (!id) return;
@@ -163,13 +164,13 @@ const ReviewDetailsPage = () => {
                   {review.images.map((img, i) => (
                     <a 
                       key={i} 
-                      href={`${baseUrl}${img}`} 
+                      href={`${IMAGE_BASE_URL}${img}`} 
                       target="_blank" 
                       rel="noreferrer"
                       className="h-32 w-32 md:h-48 md:w-48 rounded-2xl border border-gray-200 overflow-hidden hover:ring-4 hover:ring-blue-100 transition-all group shadow-sm"
                     >
                       <img 
-                        src={`${baseUrl}${img}`} 
+                        src={`${IMAGE_BASE_URL}${img}`} 
                         className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300" 
                         alt={`Review attachment ${i + 1}`}
                       />
