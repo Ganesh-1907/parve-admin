@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, X, Loader2 } from "lucide-react";
-import axios from "axios";
 import { useState, useEffect } from "react";
+import api from "@/api/axios";
 import { compressImage } from "@/utils/compressImage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,8 +58,6 @@ const EditProductPage = () => {
     subImages: [] as File[],
     subImageUrls: [] as string[],
   });
-  const token = localStorage.getItem("token");
-
   // Helper to format date for input
   const formatDateForInput = (dateStr: string | null | undefined) => {
     if (!dateStr) return "";
@@ -71,7 +69,7 @@ const EditProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/products/${id}`);
+        const res = await api.get(`/products/${id}`);
         const product: Product = res.data;
         // Parse existing unit string into numeric value + unit type
         const rawUnit = product.unit ?? "";
@@ -141,9 +139,8 @@ const EditProductPage = () => {
     });
 
     try {
-      await axios.put(`${API_BASE_URL}/products/update/${id}`, formData, {
+      await api.put(`/products/update/${id}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });

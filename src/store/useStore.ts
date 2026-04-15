@@ -1,7 +1,13 @@
 import { Product, CartItem, WishlistItem } from "@/types";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { signupApi, loginApi } from "@/api/auth.api";
+import {
+  clearPersistedSession,
+  getStoredToken,
+  hasValidToken,
+  setStoredToken,
+} from "@/lib/auth";
 import {
   getCartApi,
   addToCartApi,
@@ -64,9 +70,10 @@ interface AuthStore {
 
 // Check if user is logged in
 const isUserLoggedIn = () => {
-  const token = localStorage.getItem("token");
-  return !!token;
+  return hasValidToken();
 };
+
+const initialToken = hasValidToken() ? getStoredToken() : null;
 
 export const useCartStore = create<CartStore>()(
   persist(
@@ -184,7 +191,10 @@ export const useCartStore = create<CartStore>()(
 
       setItems: (items) => set({ items }),
     }),
-    { name: "parve-cart" }
+    {
+      name: "parve-cart",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );
 
@@ -268,16 +278,19 @@ export const useWishlistStore = create<WishlistStore>()(
       setItems: (items, products) =>
         set({ items, productCache: products || get().productCache }),
     }),
-    { name: "parve-wishlist" }
+    {
+      name: "parve-wishlist",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );
 
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      isLoggedIn: false,
+      isLoggedIn: !!initialToken,
       user: null,
-      token: null,
+      token: initialToken,
       loading: false,
 
       /* ===== SIGNUP ===== */
@@ -310,7 +323,7 @@ export const useAuthStore = create<AuthStore>()(
 
           const res = await loginApi({ email, password });
 
-          localStorage.setItem("token", res.token);
+          setStoredToken(res.token);
 
           set({
             isLoggedIn: true,
@@ -335,11 +348,12 @@ export const useAuthStore = create<AuthStore>()(
 
       /* ===== LOGOUT ===== */
       logout: () => {
-        localStorage.removeItem("token");
+        clearPersistedSession();
         set({
           isLoggedIn: false,
           user: null,
           token: null,
+          loading: false,
         });
         // Clear cart and wishlist on logout
         useCartStore.getState().setItems([]);
@@ -348,6 +362,7 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: "parve-auth",
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );

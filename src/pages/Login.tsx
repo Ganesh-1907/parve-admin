@@ -32,8 +32,7 @@ const Login = () => {
     } else {
       toast({
         title: "Login failed",
-        description: "Please check your credentials.",
-        variant: "destructive",
+        description: "Invalid credentials",
       });
     }
   };

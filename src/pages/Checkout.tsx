@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useCartStore, useAuthStore } from "@/store/useStore";
 import { toast } from "@/hooks/use-toast";
 import { createRazorpayOrderApi, verifyPaymentApi } from "@/api/payment.api";
-import axios from "axios";
+import api from "@/api/axios";
+import { getErrorMessage } from "@/lib/error-message";
 
 interface PaymentResponse {
   razorpay_payment_id: string;
@@ -18,12 +19,10 @@ interface PaymentResponse {
 const Checkout = () => {
   const navigate = useNavigate();
   const { items, getTotalPrice, clearCart } = useCartStore();
-  const { isLoggedIn, user } = useAuthStore();
+  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState("");
   const [saveAddress, setSaveAddress] = useState(false);
-  
-  const token = localStorage.getItem("token");
 
   // Initialize address from user profile
   useEffect(() => {
@@ -36,7 +35,7 @@ const Checkout = () => {
     try {
       if (!address.trim()) {
          toast({
-          title: "Address Required",
+          title: "Address required",
           description: "Please enter a valid delivery address.",
           variant: "destructive",
         });
@@ -46,15 +45,9 @@ const Checkout = () => {
       setLoading(true);
 
       // Save address if checked
-      if (saveAddress && token) {
+      if (saveAddress) {
         try {
-           await axios.put(
-            `${import.meta.env.VITE_API_BASE_URL}/users/profile`,
-            { address },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
+          await api.put("/users/profile", { address });
         } catch (err) {
           console.error("Failed to save address", err);
         }
@@ -112,8 +105,11 @@ const Checkout = () => {
           } catch (error: any) {
             console.error("Verification Error:", error);
             toast({
-              title: "Payment Verification Failed",
-              description: error.message || "Please contact support.",
+              title: "Payment verification failed",
+              description: getErrorMessage(
+                error,
+                "We couldn't confirm your payment. Please contact support if the amount was debited.",
+              ),
               variant: "destructive",
             });
           }
@@ -134,8 +130,9 @@ const Checkout = () => {
       const rzp = new (window as any).Razorpay(options);
       rzp.on('payment.failed', function (response: any) {
         toast({
-          title: "Payment Failed",
-          description: response.error.description,
+          title: "Payment failed",
+          description:
+            response?.error?.description || "Your payment could not be completed. Please try again.",
           variant: "destructive",
         });
       });
@@ -144,8 +141,11 @@ const Checkout = () => {
     } catch (error: any) {
       console.error("Payment Error:", error);
       toast({
-        title: "Something went wrong",
-        description: error.message || "Unable to initiate payment",
+        title: "Unable to start payment",
+        description: getErrorMessage(
+          error,
+          "We're having trouble starting payment right now. Please try again.",
+        ),
         variant: "destructive",
       });
     } finally {

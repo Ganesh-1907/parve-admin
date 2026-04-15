@@ -1,30 +1,16 @@
+import api from "./axios";
+
 export const createRazorpayOrderApi = async (data: { items: any[], address: string }) => {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/create-order`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    });
-    return response.json();
+    const response = await api.post("/payment/create-order", data);
+    return response.data;
 };
 
 export const verifyPaymentApi = async (data: any) => {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/verify`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-    });
-    return response.json();
+    const response = await api.post("/payment/verify", data);
+    return response.data;
 };
 
 export const getRazorpayKeyApi = async () => {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/key`);
-    return response.json();
+    const response = await api.get("/payment/key");
+    return response.data;
 };

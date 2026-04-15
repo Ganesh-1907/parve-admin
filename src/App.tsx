@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminLayout } from "@/components/layout/AdminLayout";
+import SessionWatcher from "@/components/SessionWatcher";
+import AdminSessionBoundary from "@/components/AdminSessionBoundary";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -24,6 +26,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AdminSessionBoundary />
+        <SessionWatcher />
         <Routes>
           {/* Auth Routes (no layout) */}
           <Route path="/login" element={<Login />} />

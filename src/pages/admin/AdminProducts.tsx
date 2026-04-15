@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
+import api from "@/api/axios";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 interface Product {
   _id: string;
@@ -32,7 +30,7 @@ const AdminProducts = () => {
   /* ================= FETCH PRODUCTS ================= */
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/products`);
+      const res = await api.get("/products");
       setProducts(res.data.products);
     } catch (error) {
       toast({ title: "Failed to load products", variant: "destructive" });
@@ -55,12 +53,7 @@ const AdminProducts = () => {
     if (!confirm("Delete this product?")) return;
     try {
       setDeletingId(id);
-      const token = localStorage.getItem("token");
-      await axios.delete(`${API_BASE_URL}/products/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.delete(`/products/delete/${id}`);
       toast({ title: "Product deleted" });
       fetchProducts();
     } catch (error) {

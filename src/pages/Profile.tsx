@@ -4,7 +4,8 @@ import { User, Package, Heart, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import axios from "axios";
+import api from "@/api/axios";
+import { useAuthStore } from "@/store/useStore";
 
 interface UserType {
   name: string;
@@ -15,53 +16,36 @@ interface UserType {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
-  const token = localStorage.getItem("token");
 
   // 🔥 FETCH PROFILE USING API + ENV
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/auth/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const res = await api.get("/auth/me");
         setUser(res.data.user);
       } catch (error) {
         console.error("Profile fetch failed", error);
-        localStorage.removeItem("token");
+        logout();
         navigate("/login");
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) {
+    if (useAuthStore.getState().token) {
       fetchProfile();
     } else {
       navigate("/login");
     }
-  }, [token, navigate]);
+  }, [logout, navigate]);
 
   const handleUpdateProfile = async (updatedData: any) => {
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/users/profile`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await api.put("/users/profile", updatedData);
       setUser(res.data.user);
       toast({
         title: "Profile Updated",
@@ -78,7 +62,7 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     navigate("/login");
   };
 
