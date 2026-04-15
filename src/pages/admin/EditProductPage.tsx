@@ -22,6 +22,7 @@ interface Product {
   _id: string;
   productName: string;
   description: string;
+  offerTag?: string;
   price: number;
   stock: number;
   category: string;
@@ -44,6 +45,7 @@ const EditProductPage = () => {
   const [form, setForm] = useState({
     productName: "",
     description: "",
+    offerTag: "",
     price: "",
     stock: "",
     category: "",
@@ -80,6 +82,7 @@ const EditProductPage = () => {
         setForm({
           productName: product.productName,
           description: product.description,
+          offerTag: product.offerTag ?? "",
           price: String(product.price),
           stock: String(product.stock),
           category: product.category,
@@ -116,6 +119,7 @@ const EditProductPage = () => {
 
     formData.append("productName", form.productName);
     formData.append("description", form.description);
+    formData.append("offerTag", form.offerTag);
     formData.append("price", form.price);
     formData.append("stock", form.stock);
     formData.append("category", form.category);
@@ -219,6 +223,18 @@ const EditProductPage = () => {
               className="mt-2 bg-white border border-gray-300 text-gray-900 rounded-md focus:border-gray-500 focus:ring-gray-500 placeholder-gray-400 shadow-sm"
               rows={4}
               required
+            />
+          </div>
+
+          <div>
+            <Label className="text-gray-700 font-medium">Offer Tag</Label>
+            <Input
+              value={form.offerTag}
+              onChange={(e) =>
+                setForm({ ...form, offerTag: e.target.value })
+              }
+              placeholder="e.g. Buy 1 Get 1"
+              className="mt-2 bg-white border border-gray-300 text-gray-900 rounded-md focus:border-gray-500 focus:ring-gray-500 placeholder-gray-400 shadow-sm"
             />
           </div>
 
